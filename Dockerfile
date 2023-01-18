@@ -13,7 +13,10 @@ LABEL maintainer="UC San Diego ITS/ETS <ets-consult@ucsd.edu>"
 # 2) change to root to install packages
 USER root
 
-RUN apt-get -y install htop ping g++ libglew-dev
+RUN apt-get update && \
+    apt-get -y install g++
+
+RUN apt-get -y install libglew-dev
 
 # 3) install packages using notebook user
 USER apanse
