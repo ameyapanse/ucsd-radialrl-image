@@ -19,23 +19,23 @@ RUN apt-get update && \
 RUN apt-get -y install libglew-dev
 
 # 3) install packages using notebook user
-USER apanse
-WORKDIR /home/apanse
-RUN mkdir -p radialrl-atari && \
-    mkdir -p radialrl-mujoco && \
-    mkdir -p radialrl-procgen
-
-COPY ./requirements/atari-requirements.txt radialrl-atari/requirements.txt
-COPY ./requirements/mujoco-requirements.txt radialrl-mujoco/requirements.txt
-COPY ./requirements/procgen-requirements.txt radialrl-procgen/requirements.txt
-
-RUN python3 -m venv /home/apanse/radialrl-atari && \
-    python3 -m venv /home/apanse/radialrl-mujoco && \
-    python3 -m venv /home/apanse/radialrl-procgen
-
-RUN . /radialrl-atari/bin/activate && which python && pip install -r --no-cache-dir requirements.txt
-RUN . /radialrl-mujoco/bin/activate && which python && pip install -r --no-cache-dir requirements.txt
-RUN . /radialrl-procgen/bin/activate && which python && pip install -r --no-cache-dir requirements.txt
+USER jovyan
+#WORKDIR /home/apanse
+#RUN mkdir -p radialrl-atari && \
+#    mkdir -p radialrl-mujoco && \
+#    mkdir -p radialrl-procgen
+#
+#COPY ./requirements/atari-requirements.txt radialrl-atari/requirements.txt
+#COPY ./requirements/mujoco-requirements.txt radialrl-mujoco/requirements.txt
+#COPY ./requirements/procgen-requirements.txt radialrl-procgen/requirements.txt
+#
+#RUN python3 -m venv /home/apanse/radialrl-atari && \
+#    python3 -m venv /home/apanse/radialrl-mujoco && \
+#    python3 -m venv /home/apanse/radialrl-procgen
+#
+#RUN . /radialrl-atari/bin/activate && which python && pip install -r --no-cache-dir requirements.txt
+#RUN . /radialrl-mujoco/bin/activate && which python && pip install -r --no-cache-dir requirements.txt
+#RUN . /radialrl-procgen/bin/activate && which python && pip install -r --no-cache-dir requirements.txt
 
 # Override command to disable running jupyter notebook at launch
 # CMD ["/bin/bash"]
