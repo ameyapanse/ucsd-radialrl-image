@@ -16,8 +16,7 @@ USER root
 RUN apt-get update && \
     apt-get -y install g++
 
-RUN apt-get -y install libglew-dev
-RUN apt-get -y install zlib1g
+RUN apt-get -y install libglew-dev libjpeg8-dev zlib1g-dev
 
 # 3) install packages using notebook user
 USER jovyan
