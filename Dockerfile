@@ -22,18 +22,18 @@ RUN apt-get -y install zlib1g
 # 3) install packages using notebook user
 USER jovyan
 WORKDIR /home/apanse
-RUN mkdir -p radialrl-atari && \
-    mkdir -p radialrl-mujoco && \
-    mkdir -p radialrl-procgen
-
-COPY ./requirements/atari-requirements.txt radialrl-atari/requirements.txt
-#COPY ./requirements/mujoco-requirements.txt radialrl-mujoco/requirements.txt
-#COPY ./requirements/procgen-requirements.txt radialrl-procgen/requirements.txt
-
-RUN python3 -m venv /home/apanse/radialrl-atari && \
-    . /radialrl-atari/bin/activate &&  \
-    which python &&  \
-    pip install -r --no-cache-dir requirements.txt
+#RUN mkdir -p radialrl-atari && \
+#    mkdir -p radialrl-mujoco && \
+#    mkdir -p radialrl-procgen
+#
+#COPY ./requirements/atari-requirements.txt radialrl-atari/requirements.txt
+##COPY ./requirements/mujoco-requirements.txt radialrl-mujoco/requirements.txt
+##COPY ./requirements/procgen-requirements.txt radialrl-procgen/requirements.txt
+#
+#RUN python3 -m venv /home/apanse/radialrl-atari && \
+#    . /radialrl-atari/bin/activate &&  \
+#    which python &&  \
+#    pip install -r --no-cache-dir requirements.txt
 #    python3 -m venv /home/apanse/radialrl-mujoco && \
 #    python3 -m venv /home/apanse/radialrl-procgen
 
