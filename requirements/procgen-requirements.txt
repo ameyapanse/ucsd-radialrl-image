@@ -1,7 +1,0 @@
-numpy
-gym
-procgen
-torch
-torchvision
-six
-pfrl
