@@ -27,8 +27,7 @@ RUN pip install --no-cache-dir  datascience \
 								jupyter-tensorboard \
 								opencv-python \
 								pycocotools \
-								"pillow<7" \
-								tensorflow-gpu>=2.2
+								"pillow<7"
 
 # torch must be installed separately since it requires a non-pypi repo. See stable version above
 RUN pip install torch==1.5.0+cu101 torchvision==0.6.0+cu101 pytorch-ignite -f https://download.pytorch.org/whl/torch_stable.html;
