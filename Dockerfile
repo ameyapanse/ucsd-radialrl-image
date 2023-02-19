@@ -1,44 +1,47 @@
-# 1) choose base container
-# generally use the most recent tag
+FROM ucsdets/datahub-base-notebook:2021.2.2
 
-# base notebook, contains Jupyter and relevant tools
-# See https://github.com/ucsd-ets/datahub-docker-stack/wiki/Stable-Tag 
-# for a list of the most current containers we maintain
-ARG BASE_CONTAINER=ucsdets/scipy-ml-notebook:2023.1-stable
-
-FROM $BASE_CONTAINER
-
-LABEL maintainer="UC San Diego ITS/ETS <ets-consult@ucsd.edu>"
-
-# 2) change to root to install packages
 USER root
 
+# tensorflow, pytorch stable versions
+# https://pytorch.org/get-started/previous-versions/
+# https://www.tensorflow.org/install/source#linux
+
 RUN apt-get update && \
-    apt-get -y install g++
+	apt-get install -y \
+			libtinfo5 g++ libglew-dev libjpeg8-dev zlib1g-dev
+#			nvidia-cuda-toolkit
 
-RUN apt-get -y install libglew-dev libjpeg8-dev zlib1g-dev
+#RUN conda install cudatoolkit=10.2 \
+RUN conda install cudatoolkit=10.1 \
+				  cudatoolkit-dev=10.1\
+				  cudnn \
+				  nccl \
+				  -y
 
-# 3) install packages using notebook user
-USER jovyan
-WORKDIR /home/apanse
-#RUN mkdir -p radialrl-atari && \
-#    mkdir -p radialrl-mujoco && \
-#    mkdir -p radialrl-procgen
-#
-#COPY ./requirements/atari-requirements.txt radialrl-atari/requirements.txt
-##COPY ./requirements/mujoco-requirements.txt radialrl-mujoco/requirements.txt
-##COPY ./requirements/procgen-requirements.txt radialrl-procgen/requirements.txt
-#
-#RUN python3 -m venv /home/apanse/radialrl-atari && \
-#    . /radialrl-atari/bin/activate &&  \
-#    which python &&  \
-#    pip install -r --no-cache-dir requirements.txt
-#    python3 -m venv /home/apanse/radialrl-mujoco && \
-#    python3 -m venv /home/apanse/radialrl-procgen
+# Install pillow<7 due to dependency issue https://github.com/pytorch/vision/issues/1712
+RUN pip install --no-cache-dir  datascience \
+								PyQt5 \
+								scapy \
+								nltk \
+								opencv-contrib-python-headless \
+								jupyter-tensorboard \
+								opencv-python \
+								pycocotools \
+								"pillow<7" \
+								tensorflow-gpu>=2.2
 
-#RUN . /radialrl-atari/bin/activate && which python && pip install -r --no-cache-dir requirements.txt
-#RUN . /radialrl-mujoco/bin/activate && which python && pip install -r --no-cache-dir requirements.txt
-#RUN . /radialrl-procgen/bin/activate && which python && pip install -r --no-cache-dir requirements.txt
+# torch must be installed separately since it requires a non-pypi repo. See stable version above
+RUN pip install torch==1.5.0+cu101 torchvision==0.6.0+cu101 pytorch-ignite -f https://download.pytorch.org/whl/torch_stable.html;
+#RUN conda install pytorch torchvision torchaudio cudatoolkit=10.2 -c pytorch
 
-# Override command to disable running jupyter notebook at launch
-# CMD ["/bin/bash"]
+RUN	chown -R 1000:1000 /home/jovyan
+
+COPY ./tests/ /usr/share/datahub/tests/scipy-ml-notebook
+RUN chmod -R +x /usr/share/datahub/tests/scipy-ml-notebook && \
+    chown -R 1000:1000 /home/jovyan && \
+	chmod +x /run_jupyter.sh
+
+RUN ln -s /usr/local/nvidia/bin/nvidia-smi /opt/conda/bin/nvidia-smi
+
+USER $NB_UID:$NB_GID
+ENV PATH=${PATH}:/usr/local/nvidia/bin
