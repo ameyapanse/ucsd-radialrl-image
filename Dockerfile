@@ -24,7 +24,7 @@ COPY activate.sh /tmp/activate.sh
 
 RUN chmod 777 /etc/datahub-profile.d/*.sh /tmp/activate.sh
 
-USER jovyan
+
 
 #RUN conda install cudatoolkit=10.2 \
 #RUN conda install cudatoolkit=10.1 \
