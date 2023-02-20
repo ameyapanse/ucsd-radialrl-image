@@ -82,4 +82,4 @@ RUN ln -s /usr/local/nvidia/bin/nvidia-smi /opt/conda/bin/nvidia-smi
 USER $NB_UID:$NB_GID
 ENV PATH=${PATH}:/usr/local/nvidia/bin:/opt/conda/bin
 
-RUN . /tmp/activate.sh
+#RUN . /tmp/activate.sh
